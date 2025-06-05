@@ -1,4 +1,4 @@
-# sugoi (**su**mmarise **go**, **i**'m not a weeb I swear)
+# sugoi (*su*mmarise *go*, *i*'m not a weeb I swear)
 
 A simple youtube video summariser written in go
 
