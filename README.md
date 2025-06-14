@@ -26,7 +26,7 @@ echo "Summarise the dir contents"; ls ./src | go run ./src
 cat ./src/main.go | go run ./src
 ```
 
-Note: If you are running from an installed binary, you would replace `go run ./src` with `sugoi`
+Note: If you're running from an installed binary, you would replace `go run ./src` with `sugoi`
 
 ---
 
