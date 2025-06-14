@@ -21,7 +21,7 @@ func main() {
 
 	hasPipe := !term.IsTerminal(int(os.Stdin.Fd()))
 
-	hasArg := len(os.Args) != 1
+	hasArg := len(os.Args) > 1
 
 	if !hasArg && !hasPipe {
 		fmt.Println("No args passed!")

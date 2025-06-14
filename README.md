@@ -29,5 +29,15 @@ sudo pacman -S torchvision-cuda python-openai-whisper
 ## Preview
 ![image](assets/preview.png)
 
+## Building And Installing
+### Build the binary
+```sh
+go build -o sugoi ./src
+```
+### Move it (optional)
+```sh
+sudo rm /usr/bin/sugoi; sudo mv ./sugoi /usr/bin
+```
+
 ## Note
 This was made for Arch on Nvidia, you might need a few manual tweaks
