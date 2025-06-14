@@ -7,7 +7,7 @@ sugoi works with YouTube links, local files (just pass the file path and it’ll
 ## Usage Example
 ```sh
 # Summarise a youtube video
-go run ./src "https://youtu.be/dQw4w9WgXcQ?list=RDdQw4w9WgXcQ"
+go run ./src "https://youtu.be/dQw4w9WgXcQ"
 
 # Summarise a string arg
 go run ./src "This statement is false"

@@ -23,7 +23,7 @@ func main() {
 
 	hasArg := len(os.Args) != 1
 
-	if hasArg && !hasPipe {
+	if !hasArg && !hasPipe {
 		fmt.Println("No args passed!")
 		return
 	}
@@ -45,6 +45,7 @@ func main() {
 	result := ""
 
 	if hasPipe {
+		fmt.Println("Summarising pipe")
 		result = GenerateSummary(pipe)
 	} else if IsURL(arg) {
 		if IsSupported(arg) {

@@ -13,6 +13,8 @@ func DownloadAudio(url string, dir string) string {
 		"-x",
 		"--audio-format", "mp3",
 		"-o", "audio.mp3",
+		"--postprocessor-args", "-ar 16000",
+		"--no-playlist",
 		url,
 	)
 
@@ -29,7 +31,7 @@ func DownloadAudio(url string, dir string) string {
 }
 
 func IsSupported(url string) bool {
-	cmd := exec.Command("yt-dlp", "--dump-json", "--simulate", url)
+	cmd := exec.Command("yt-dlp", "--dump-json", "--simulate", "--skip-download", url, "--no-playlist", "--no-warnings", "--no-call-home")
 	output, err := cmd.CombinedOutput()
 
 	if err != nil {

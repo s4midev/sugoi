@@ -1,12 +1,15 @@
 package main
 
 import (
+	"fmt"
 	"os"
 	"os/exec"
 	"path"
 )
 
 func Transcribe(content string, dir string) []byte {
+	fmt.Println("Transcribing string")
+
 	trans := exec.Command(
 		"whisper",
 		"audio.mp3",
