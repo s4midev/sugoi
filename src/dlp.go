@@ -25,7 +25,7 @@ func DownloadAudio(url string, dir string) string {
 		os.Exit(1)
 	}
 
-	fmt.Println("Downloaded audio")
+	log("Downloaded audio")
 
 	return path.Join(dir, "audio.mp4")
 }

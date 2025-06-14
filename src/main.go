@@ -7,9 +7,17 @@ import (
 	"os/user"
 	"path"
 
+	"github.com/alexflint/go-arg"
 	"github.com/fatih/color"
 	"golang.org/x/term"
 )
+
+type args struct {
+	Positional string `arg:"positional" help:"The main data (string, url, file path)"`
+	Quiet      bool   `arg:"-q" help:"Don't echo anything except the summary"`
+}
+
+var log func(content string)
 
 func main() {
 	u, _ := user.Current()
@@ -21,17 +29,14 @@ func main() {
 
 	hasPipe := !term.IsTerminal(int(os.Stdin.Fd()))
 
-	hasArg := len(os.Args) > 1
+	var a args
 
-	if !hasArg && !hasPipe {
-		fmt.Println("No args passed!")
-		return
-	}
+	arg.MustParse(&a)
 
-	arg := ""
-
-	if hasArg {
-		arg = os.Args[1]
+	log = func(content string) {
+		if !a.Quiet {
+			fmt.Println(content)
+		}
 	}
 
 	var pipe []byte
@@ -40,47 +45,47 @@ func main() {
 		pipe, _ = io.ReadAll(os.Stdin)
 	}
 
-	fmt.Println("Checking args....")
+	log("Checking args....")
 
 	result := ""
 
 	if hasPipe {
-		fmt.Println("Summarising pipe")
+		log("Summarising pipe")
 		result = GenerateSummary(pipe)
-	} else if IsURL(arg) {
-		if IsSupported(arg) {
-			fmt.Println("Transcribing " + color.YellowString(arg) + " with yt-dlp")
+	} else if IsURL(a.Positional) {
+		if IsSupported(a.Positional) {
+			log("Transcribing " + color.YellowString(a.Positional) + " with yt-dlp")
 			// TODO: implement yt-dlp calling here
 
-			DownloadAudio(arg, runDir)
-			trans := Transcribe(arg, runDir)
+			DownloadAudio(a.Positional, runDir)
+			trans := Transcribe(a.Positional, runDir)
 			result = GenerateSummary(trans)
 		} else {
-			fmt.Println("[Error] URL was passed, but it's not supported by yt-dlp!")
+			log("[Error] URL was passed, but it's not supported by yt-dlp!")
 			return
 		}
 	} else {
-		info, stat := os.Stat(arg)
+		info, stat := os.Stat(a.Positional)
 
 		// assume it's a string
 		if os.IsNotExist(stat) {
-			fmt.Println("Summarising string " + color.YellowString(`"`+arg+`"`))
+			log("Summarising string " + color.YellowString(`"`+a.Positional+`"`))
 
-			result = GenerateSummary([]byte(arg))
+			result = GenerateSummary([]byte(a.Positional))
 		} else if !info.IsDir() {
 			// it's a file
-			fmt.Println("Reading file " + color.YellowString(arg) + " and transcribing")
+			log("Reading file " + color.YellowString(a.Positional) + " and transcribing")
 
-			data, err := os.ReadFile(arg)
+			data, err := os.ReadFile(a.Positional)
 
 			if err != nil {
-				fmt.Println("Failed reading supplied file path contents")
+				log("Failed reading supplied file path contents")
 				return
 			}
 
 			result = GenerateSummary(data)
 		} else {
-			fmt.Println(color.RedString("Directory paths are not supported!"))
+			log(color.RedString("Directory paths are not supported!"))
 			return
 		}
 	}
