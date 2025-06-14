@@ -36,7 +36,7 @@ go build -o sugoi ./src
 ```
 ### Move it (optional)
 ```sh
-sudo rm /usr/bin/sugoi; sudo mv ./sugoi /usr/bin
+sudo rm "$(which sugoi)"; sudo mv ./sugoi /usr/bin
 ```
 
 ## Note
